@@ -14,7 +14,7 @@ import * as Util from '@/core/util'
 
 import router from '@/router'
 import store from '@/store'
-import App from '@/app.vue'
+import App from '@/App.vue'
 import * as DataConf from '@/data'
 
 import 'umy-ui/lib/theme-chalk/index.css'
