@@ -32,7 +32,7 @@
             </div>
           </div>
           <div class="right">
-            <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="input2" class="search-box"></el-input>
+            <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="keyword" class="search-box"></el-input>
             <Icon name="message" scale="4.5" class="message-tips"></Icon>
             <div><img class="nav-avatar" src="http://uc.happyelements.net/admin/data2/small-pic/jetwong.wang.jpg" alt="头像" /></div>
             <div class="nickname-box">
@@ -51,7 +51,7 @@
       <el-container>
         <el-aside class="aside" ref="aside">
           <div style="height: 100%">
-            <side-bar :isCollapse="isCollapse"></side-bar>
+            <side-bar></side-bar>
           </div>
         </el-aside>
         <!-- 页面主体 -->
@@ -76,10 +76,10 @@ const totalHeight = navBarHeight + copyrightHeight + 70 // 总高度=头部高�
 export default {
   data() {
     return {
-      isCollapse: false, // 左侧菜单栏是否折叠
       clientHeight: 0, // 页面高度
       title: window.SYSTEM_TITLE,
-      copyright: window.COPYRIGHT
+      copyright: window.COPYRIGHT,
+      keyword: ''
     }
   },
   mounted() {
@@ -91,7 +91,8 @@ export default {
     setResize() {
       this.clientHeight = document.body.clientHeight
       this.$refs.appMain.$el.style.minHeight = `${this.clientHeight - totalHeight + 30}px` // 计算主体内容最小高度
-    }
+    },
+    accountAction() {}
   },
   watch: {},
   components: {
@@ -203,7 +204,7 @@ export default {
   overflow-y: hidden;
   width: $sidebar-width !important;
   border: 0px !important;
-  padding-top: 18px;
+  padding-top: 10px;
   background: $sidebar-background;
 
   &::-webkit-scrollbar {
