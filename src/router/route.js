@@ -4,7 +4,7 @@ const routes = [
   {
     path: '/',
     name: 'Index',
-    redirect: '/example/list',
+    redirect: '/setting/organization/list',
     component: () => import('@/views/index'),
     children: [...homeRouter]
   },

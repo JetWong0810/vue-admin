@@ -1,45 +1,53 @@
 <template>
   <div class="app-sidebar">
-    <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" background-color="#324c64" text-color="#bfcbd9" active-text-color="#f6ff69">
-      <el-submenu index="1">
-        <template slot="title">
-          <Icon name="set" scale="2" class="el-icon-menu"></Icon>
-          <span>导航一</span>
-        </template>
-        <el-menu-item-group>
-          <el-menu-item index="1-1">选项1</el-menu-item>
-          <el-menu-item index="1-2">选项2</el-menu-item>
-        </el-menu-item-group>
-      </el-submenu>
-      <el-menu-item index="2">
-        <Icon name="set" scale="2" class="el-icon-menu"></Icon>
-        <span slot="title">导航二</span>
-      </el-menu-item>
-      <el-menu-item index="3">
-        <Icon name="set" scale="2" class="el-icon-menu"></Icon>
-        <span slot="title">导航三</span>
-      </el-menu-item>
-      <el-menu-item index="4">
-        <Icon name="set" scale="2" class="el-icon-menu"></Icon>
-        <span slot="title">导航四</span>
-      </el-menu-item>
+    <el-menu class="el-menu-vertical-demo" :default-active="currentMenu" :router="true" @open="handleOpen" @close="handleClose" background-color="#324c64" text-color="#bfcbd9" active-text-color="#f6ff69">
+      <template v-for="(item, index) in menuList">
+        <el-submenu :index="item.name" v-if="item.children.length > 0" :key="index">
+          <template slot="title">
+            <Icon :name="item.icon" scale="2" class="el-icon-menu"></Icon>
+            <span>{{ item.title }}</span>
+          </template>
+          <el-menu-item-group>
+            <el-menu-item :index="child.name" v-for="(child, childIndex) in item.children" :key="childIndex" :route="{ path: child.route }">{{ child.title }}</el-menu-item>
+          </el-menu-item-group>
+        </el-submenu>
+        <el-menu-item :index="item.name" v-else :key="index" :route="{ path: item.route }">
+          <Icon :name="item.icon" scale="2" class="el-icon-menu"></Icon>
+          <span slot="title">{{ item.title }}</span>
+        </el-menu-item>
+      </template>
     </el-menu>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import menuList from '@/mock/menu-list'
 
 export default {
   data() {
     return {
-      sidebar: ''
+      sidebar: '',
+      menuList: [],
+      currentMenu: ''
     }
   },
   inject: ['eventBus'],
   async mounted() {
-    // 处理菜单排序问题
-    // this.setMenuSort()
+    // 调用接口获取当前页面菜单 todo
+    this.menuList = menuList
+    this.menuList.map(item => {
+      if (item.route == this.$route.path) {
+        this.currentMenu = item.name
+      }
+      if (item.children && item.children.length > 0) {
+        item.children.map(child => {
+          if (child.route == this.$route.path) {
+            this.currentMenu = child.name
+          }
+        })
+      }
+    })
   },
   methods: {
     handleOpen() {},

@@ -1,54 +1,12 @@
 import Utils from '@/core/util/util'
 import pluginsConfig from './plugin'
-import exampleRouter from './example'
+import flowConfig from './flow'
+import systemConfig from './system'
+// import exampleRouter from './example'
 
 let homeRouter = [
-  exampleRouter,
-  {
-    title: '测试菜单1',
-    type: 'view',
-    name: 'error1',
-    route: '/error1',
-    filePath: 'views/error.vue',
-    inNav: true,
-    icon: '/example'
-  },
-  {
-    title: '测试菜单2',
-    type: 'view',
-    name: 'error2',
-    route: '/error2',
-    filePath: 'views/error.vue',
-    inNav: true,
-    icon: '/example'
-  },
-  {
-    title: '测试菜单3',
-    type: 'view',
-    name: 'error3',
-    route: '/error3',
-    filePath: 'views/error.vue',
-    inNav: true,
-    icon: '/example'
-  },
-  {
-    title: '测试菜单4',
-    type: 'view',
-    name: 'error4',
-    route: '/error4',
-    filePath: 'views/error.vue',
-    inNav: true,
-    icon: '/example'
-  },
-  {
-    title: '测试菜单5',
-    type: 'view',
-    name: 'error5',
-    route: '/error5',
-    filePath: 'views/error.vue',
-    inNav: true,
-    icon: '/example'
-  },
+  flowConfig,
+  systemConfig,
   {
     title: '错误提示',
     type: 'view',

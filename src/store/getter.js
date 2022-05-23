@@ -21,6 +21,8 @@ const deepTravel = (obj, fuc) => {
 
 export const logined = state => state.logined
 
+export const token = state => state.token
+
 export const user = state => state.user
 
 export const pageName = state => state.pageName

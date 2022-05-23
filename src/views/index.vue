@@ -57,6 +57,10 @@
         <!-- 页面主体 -->
         <el-main ref="main">
           <div class="main-container">
+            <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb">
+              <el-breadcrumb-item>系统设置</el-breadcrumb-item>
+              <el-breadcrumb-item>组织管理</el-breadcrumb-item>
+            </el-breadcrumb>
             <app-main ref="appMain"></app-main>
             <div class="copyright">{{ copyright }}</div>
           </div>
@@ -71,7 +75,8 @@ import { SideBar, AppMain } from '@/components/layout'
 
 const navBarHeight = 70 // header高度
 const copyrightHeight = 48 // 历史记录栏与舞台的间距
-const totalHeight = navBarHeight + copyrightHeight + 70 // 总高度=头部高度+历史栏记录高度+两者间距
+const breadcrumb = 20 // 面包屑高度
+const totalHeight = navBarHeight + copyrightHeight + breadcrumb + 70 // 总高度=头部高度+历史栏记录高度+两者间距
 
 export default {
   data() {
@@ -221,6 +226,10 @@ export default {
 
   .main-container {
     margin: 16px 16px 0px 16px;
+
+    .breadcrumb {
+      padding: 10px 10px 20px 10px;
+    }
   }
 
   .copyright {

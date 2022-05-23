@@ -43,7 +43,7 @@
       <!-- 操作列 -->
       <u-table-column label="操作" align="center" fixed="right" :width="operateColumnWidth" v-if="!hideOperation && showOperate">
         <template slot-scope="scope">
-          <el-button v-for="(item, index) in tableOperation" :class="(scope.row.class && scope.row.class[item.event]) || scope.row.class.default" size="mini" :key="index" @click.native="callMethod(item.event, scope.$index, scope.row, item.type)">{{ item.label }} </el-button>
+          <el-button v-for="(item, index) in tableOperation" class="table-btn" size="mini" :key="index" @click.native="callMethod(item.event, scope.$index, scope.row, item)">{{ item.label }} </el-button>
         </template>
       </u-table-column>
     </u-table>
@@ -98,8 +98,9 @@ export default {
     this.operatePermissionName = operatePermissionName
 
     // 计算操作列宽度 todo
-    const operateColumnWidth = this.tableOperation.length * 50
+    const operateColumnWidth = this.tableOperation.length * 100
     this.operateColumnWidth = `${operateColumnWidth}px`
+    console.log(this.operateColumnWidth, 9999)
     this.setBtnSort() // 列表按钮排序
     this.pageConf = _.cloneDeep(this.commonConf)
   },
@@ -109,14 +110,14 @@ export default {
       this.total_nums = data.total || 0
     },
     // 根据不同参数调用不同方法
-    callMethod(func, index, val, type) {
+    callMethod(func, index, val, data) {
       if (!func) return false
 
       const self = this
       try {
-        this.$options.methods[func](self, index, val, type)
+        this.$options.methods[func](self, index, val, data)
       } catch (e) {
-        this.$parent[func](self, index, val, type)
+        this.$parent[func](val, data)
       }
     },
 
@@ -143,15 +144,19 @@ export default {
     // 空方法，防止报错
     emptyMethod() {},
 
-    // 单条编辑
-    edit(self, index, val, type = '') {
-      if (type == 'dialog') {
-        const data = { func: 'showEditDialog', title: '编辑记录', params: { id: val.id } }
-        self.$Util.Common.emitToEvent(this, 'dialogEvent', data)
+    // 单条编辑 弹窗or页面 针对参数只为id
+    edit(self, index, val, data) {
+      if (data.moreParams) {
+        self.$parent.edit(val)
       } else {
-        const url = self.$DataConf[self.pageName].urls.editPage
-        const params = { id: val.id }
-        self.$router.push({ path: url, query: params })
+        if (data.showDialog) {
+          const data = { func: 'showEditDialog', title: '编辑记录', params: { id: val.id } }
+          self.$Util.Common.emitToEvent(this, 'dialogEvent', data)
+        } else {
+          const url = self.$DataConf[self.pageName].urls.editPage
+          const params = { id: val.id }
+          self.$router.push({ path: url, query: params })
+        }
       }
     },
 
@@ -219,7 +224,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .base-list {
-  padding: 0 30px;
+  padding: 0 10px;
   margin-top: 0px;
 
   .operations {
@@ -240,6 +245,16 @@ export default {
     border: 0px;
     color: #3798fc;
     padding: 5px 7px;
+
+    &:hover {
+      background: #f4f6f9 !important;
+      color: #3798fc;
+    }
+  }
+  .table-btn {
+    border: unset;
+    cursor: pointer;
+    color: $theme;
 
     &:hover {
       background: #f4f6f9 !important;

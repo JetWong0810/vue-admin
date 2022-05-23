@@ -52,6 +52,7 @@ export default {
       dialogParams: {},
       editDialog: false,
       confirmDialog: false,
+      uploadDialog: false,
       confirmMsg: '',
       pageConf: {},
       formData: {},
@@ -76,7 +77,7 @@ export default {
       try {
         this.$options.methods[data.func](self)
       } catch (e) {
-        this.$parent[data.func](self)
+        this.$parent[data.func](data)
       }
     },
     showConfirmDialog(self) {
@@ -131,7 +132,7 @@ export default {
         } else {
           this.eventBus.$emit('pageSizeChange', {})
         }
-        // this.reload()
+        this.$Util.Common.emitToEvent(this, 'searchEvent', {})
       } else {
         this.$message.error(res.message)
       }

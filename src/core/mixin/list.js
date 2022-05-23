@@ -12,8 +12,12 @@ export default {
     Dialogs
   },
   computed: {
-    ...mapGetters(['pageName'])
+    ...mapGetters(['pageName', 'commonConf'])
   },
   inject: ['eventBus'],
-  methods: {}
+  methods: {
+    processEvent(data) {
+      this.$Util.Common.emitToEvent(this, 'listDataEvent', data)
+    }
+  }
 }

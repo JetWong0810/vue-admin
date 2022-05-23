@@ -28,10 +28,15 @@
 </template>
 
 <script>
+import { mapActions, mapMutations } from 'vuex'
+import AppConfig from '@/config/index'
 export default {
   data() {
     return {
-      loginForm: {},
+      loginForm: {
+        username: 'yongtian.li',
+        password: '123456'
+      },
       loading: false,
       passwordType: 'password',
       redirect: undefined,
@@ -58,24 +63,41 @@ export default {
       })
     },
     handleLogin() {
-      this.$refs.loginForm.validate(valid => {
+      this.$refs.loginForm.validate(async valid => {
         if (valid) {
           this.loading = true
-          this.$store
-            .dispatch('user/login', this.loginForm)
-            .then(() => {
-              this.$router.push({ path: this.redirect || '/' })
-              this.loading = false
-            })
-            .catch(() => {
-              this.loading = false
-            })
+          const loginRes = await this.$axios({ method: 'get', url: this.$DataConf.Api.commonApi.login, data: this.loginForm })
+          if (loginRes.code != 0) {
+            this.loading = false
+            this.$message.error(loginRes.message)
+            return
+          }
+          this.setToken(loginRes.data.token)
+          const userinfo = await this.$axios({ method: 'get', url: this.$DataConf.Api.commonApi.userinfo, data: {} }) // 获取用户信息
+          this.setUserinfo(userinfo.data)
+
+          const commonConf = await this.$axios({ method: 'get', url: this.$DataConf.Api.commonApi.commonList, data: {} })
+          this.setCommonConf(commonConf.data)
+
+          if (this.$route.query && this.$route.query.redirectRoute) {
+            this.$router.push({ path: this.$route.query.redirectRoute })
+          } else {
+            this.$router.push(AppConfig.defaultRoute)
+            this.$message.success('登录成功')
+          }
+
+          this.loading = false
         } else {
           console.log('登录校验不通过')
-          return false
+          this.loading = false
         }
       })
-    }
+    },
+    ...mapActions(['setUserinfo']),
+    ...mapMutations({
+      setToken: 'SET_TOKEN',
+      setCommonConf: 'SET_COMMON_CONFIG'
+    })
   }
 }
 </script>

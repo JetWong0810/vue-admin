@@ -30,7 +30,7 @@ $--font-path: '~element-ui/lib/theme-chalk/fonts';
 .el-button {
   padding: 5px 13px;
   border-radius: 4px;
-  width: 75px;
+  width: 80px;
   height: 28px;
   font-size: 13px;
 
@@ -409,7 +409,7 @@ $typeMap: (
   danger: #e46a76,
   warning: #ffbe4d,
   info: #8c98ae,
-  reset: #ffffff,
+  reset: #ffffff
 );
 .el-link {
   @each $type, $primaryColor in $typeMap {

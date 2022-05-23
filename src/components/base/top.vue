@@ -2,7 +2,7 @@
   <!-- 列表上部按钮操作 -->
   <div class="base-operation">
     <div class="operation-left">
-      <el-badge :value="12" class="item">
+      <!--<el-badge :value="12" class="item">
         <el-button size="small active">待审核</el-button>
       </el-badge>
       <el-badge :value="3" class="item">
@@ -13,7 +13,7 @@
       </el-badge>
       <el-badge :value="2" class="item" type="warning">
         <el-button size="small">已归档</el-button>
-      </el-badge>
+      </el-badge>-->
     </div>
     <div class="operation-right">
       <template v-for="(item, index) in pageOperation">
@@ -64,7 +64,11 @@ export default {
         ids.push(item.id)
       })
       const self = this
-      this.$options.methods[func](self, type, ids)
+      try {
+        this.$options.methods[func](self, type, ids)
+      } catch (e) {
+        this.$parent[func]()
+      }
     },
     // 添加数据
     add(self, type) {
@@ -78,24 +82,24 @@ export default {
     },
     // 批量启用
     start(self, type, ids) {
-      const data = { func: 'showConfirmDialog', message: '确认批量启用？', type: 'start', params: { ids } }
+      const data = { func: 'showConfirmDialog', params: { ids, confirmMsg: '确认批量启用？', type: 'start' } }
       self.$Util.Common.emitToEvent(self, 'dialogEvent', data)
     },
 
     // 批量停用
     stop(self, type, ids) {
-      const data = { func: 'showConfirmDialog', message: '确认批量停用？', type: 'stop', params: { ids } }
+      const data = { func: 'showConfirmDialog', params: { ids, confirmMsg: '确认批量停用？', type: 'stop' } }
       self.$Util.Common.emitToEvent(self, 'dialogEvent', data)
     },
     // 批量通过
     agree(self, type, ids) {
-      const data = { func: 'showConfirmDialog', message: '确认批量通过？', type: 'agree', params: { ids } }
+      const data = { func: 'showConfirmDialog', params: { ids, confirmMsg: '确认批量通过？', type: 'agree' } }
       self.$Util.Common.emitToEvent(self, 'dialogEvent', data)
     },
 
     // 批量驳回
     refuse(self, type, ids) {
-      const data = { func: 'showConfirmDialog', message: '确认批量驳回？', type: 'agree', params: { ids } }
+      const data = { func: 'showConfirmDialog', params: { ids, confirmMsg: '确认批量驳回？', type: 'agree' } }
       self.$Util.Common.emitToEvent(self, 'dialogEvent', data)
     },
     // 导出
@@ -120,7 +124,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0px 30px 8px 30px;
+  padding: 0px 10px 8px 10px;
   .operation-left {
     /deep/ .el-button {
       border-radius: 0px;

@@ -47,9 +47,9 @@
           <el-button type="primary" @click="onSearchSubmit">查询</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button plain @click="onSearchReset">重置</el-button>
+          <el-button type="info" @click="onSearchReset">重置</el-button>
         </el-form-item>
-        <el-form-item>
+        <el-form-item v-if="hideSearchFields.length > 0">
           <el-button class="show-more" @click="showAllSearchConditions">{{ searchBtnTitle }}<i v-bind:class="{ 'el-icon-arrow-down': !showAllConditions, 'el-icon-arrow-up': showAllConditions }" class="el-icon--right"></i></el-button>
         </el-form-item>
       </div>
@@ -96,6 +96,7 @@ export default {
     this.convertSearchParams = convertSearchParams
     this.hideSearchFields = hideSearchFields
     this.pageConf = _.cloneDeep(this.commonConf)
+    console.log(this.searchFields)
   },
   methods: {
     processEvent(data) {
@@ -108,6 +109,11 @@ export default {
 
       this.currentPage = data.currentPage || 1
       this.searchParams = this.$Util.Util.deepObjMerge(this.searchParams, data.searchParams)
+      // 处理部门id 临时
+      if (data.dept_id) {
+        this.searchParams.dept_id = data.dept_id
+      }
+      console.log('当前列表页查询转换前参数:', this.searchParams)
       this.getTableData()
     },
 
@@ -183,7 +189,7 @@ export default {
       if (self.pageConf[listKey]) {
         return true
       }
-      const url = this.$DataConf[self.pageName].urls[listKey]
+      const url = self.$DataConf[self.pageName].urls[listKey]
       const listData = await self.$axios({ method: 'get', url, data: {} })
       self.$set(self.pageConf, listKey, listData.data.list)
     },
@@ -206,7 +212,6 @@ export default {
 <style lang="scss" scoped>
 .base-search {
   padding: 0 30px;
-  margin: 30px auto 0px;
 
   .search-box {
     display: flex;
@@ -234,8 +239,9 @@ export default {
 
     .show-more {
       border: 0px;
-      background: white;
+      background: unset;
       width: 90px;
+      margin-top: -10px;
     }
 
     /deep/ .el-form-item {

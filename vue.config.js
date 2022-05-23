@@ -49,7 +49,7 @@ module.exports = {
     },
     proxy: {
       '/api': {
-        target: 'http://dev.fbiapilicence.happyelements.net',
+        target: 'http://dev.fbiapiapprovalcenter.happyelements.net',
         changeOrigin: true,
         ws: true
       }

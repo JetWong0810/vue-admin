@@ -77,10 +77,8 @@ _axios.interceptors.request.use(
         reqConfig.data = formData
       }
     }
-    const accessToken = localStorage.getItem('token')
-    // const accessToken = 'Bearer $2y$10$vnj0Vax2fCRQozCjGlHRXec6vvGa/53n/VY602c5GaIQ9tA3UmBci'
+    const accessToken = store.state.token
     if (accessToken) {
-      // eslint-disable-next-line no-param-reassign
       reqConfig.headers.Authorization = accessToken
     }
     return reqConfig

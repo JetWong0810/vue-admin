@@ -6,34 +6,6 @@ import store from '../store'
 
 Vue.use(Router)
 
-// 判断是否需要登录访问, 配置位于 config 文件夹
-let isLoginRequired = routeName => {
-  // 首次执行时缓存配置
-  let { notLoginRoute } = appConfig
-  const notLoginMark = {}
-
-  // 构建标记对象
-  if (Array.isArray(notLoginRoute)) {
-    for (let i = 0; i < notLoginRoute.length; i += 1) {
-      notLoginMark[notLoginRoute[i].toString()] = true
-    }
-  }
-
-  notLoginRoute = null // 释放内存
-
-  // 重写初始化函数
-  isLoginRequired = name => {
-    if (!name) {
-      return true
-    }
-    // 处理 Symbol 类型
-    const target = typeof name === 'symbol' ? name.description : name
-    return !notLoginMark[target]
-  }
-
-  return isLoginRequired(routeName)
-}
-
 const router = new Router({
   mode: 'history',
   scrollBehavior: () => ({
@@ -45,10 +17,12 @@ const router = new Router({
 
 router.beforeEach(async (to, from, next) => {
   // 登录验证
-  if (isLoginRequired(to.name) && !store.state.logined) {
-    next({ path: '/login' })
-    return
-  }
+  // const { notLoginRoute } = appConfig
+  // if (!notLoginRoute.includes(to.name) && !store.state.logined) {
+  //   next({ path: '/login' })
+  //   return
+  // }
+  console.log(to, from)
 
   // 路由发生变化重新计时
   Vue.prototype.$_logout_jump()
@@ -58,8 +32,9 @@ router.beforeEach(async (to, from, next) => {
     document.title = to.meta.title
   }
 
-  // 设置当前页pageName
+  // 设置当前页pageName/currentMenu
   store.commit('SET_PAGENAME', to.name)
+  // store.commit('SET_CURRENT_MENU', to.name)
 
   next()
 })

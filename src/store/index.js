@@ -13,6 +13,7 @@ const vuexLocal = new VuexPersistence({
   storage: window.localStorage,
   reducer: stateData => ({
     logined: stateData.logined,
+    token: stateData.token,
     user: stateData.user,
     permissions: stateData.permissions,
     commonConf: stateData.commonConf
