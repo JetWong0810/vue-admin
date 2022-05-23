@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import appConfig from '@/config/index'
+// import appConfig from '@/config/index'
 import routes from './route'
 import store from '../store'
 

@@ -70,7 +70,7 @@ const urls = {
   export: API.reportApi.export,
   delete: API.reportApi.delete,
   upload: API.reportApi.upload,
-  downloadTemplate: API.reportApi.downloadTemplate,
+  downloadTemplate: API.reportApi.downloadTemplate
 }
 
 // 弹框列表字段

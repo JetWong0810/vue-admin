@@ -101,12 +101,8 @@ export default {
     processBtnEvent(data) {
       console.log(data)
     },
-    edit(data) {
-      //   const url = this.$DataConf[this.pageName].urls.editPage
-      //   const params = { unique_id: data.unique_id }
-      //   this.$router.push({ path: url, query: params })
-    },
     async showEditDialog(row = {}, data = {}) {
+      console.log(data)
       this.editDialog = true
       if (!this.pageConf.orgList) {
         const orgRes = await this.$axios({ method: 'get', url: this.$DataConf.Api.commonApi.orgList, data: {} })
@@ -132,7 +128,7 @@ export default {
       this.formData.code_name = val[0].code_name
     },
     dialogSave(dialogName) {
-      this.$refs[dialog_name].validate(async valid => {
+      this.$refs[dialogName].validate(async valid => {
         if (valid) {
           const params = this.formData
           let url = ''
@@ -146,7 +142,7 @@ export default {
 
           if (res.code == 0) {
             this.$message.success('保存成功')
-            this[dialog_name] = false
+            this[dialogName] = false
             this.$Util.Common.emitToEvent(this, 'searchEvent', {})
           } else {
             this.$message.error(res.message)
